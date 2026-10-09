@@ -1,0 +1,1 @@
+"This is the file where the machine learning model for digit recognition belongs"
