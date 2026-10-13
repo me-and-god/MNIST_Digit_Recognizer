@@ -1,12 +1,17 @@
 
 "use client";
 
-import { useRef, useState } from "react";
+import { Predict } from "@/API/backendAPI";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 
-export default function DrawingCanvas() {
+type Props = {
+  setResult: Dispatch<SetStateAction<string>>;
+}
+
+export default function DrawingCanvas({ setResult }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
-  const [drawingData, setDrawingData ] = useState("");
+
 
 
   function startDrawing(
@@ -50,17 +55,18 @@ export default function DrawingCanvas() {
 
 
 
-  function handleSubmit(
+  async function handleSubmit(
     e: React.FormEvent<HTMLFormElement>
   ) {
   
+    
 
     e.preventDefault();
 
     const canvas = canvasRef.current!;
     const data = canvas.toDataURL("image/png");
 
-    setDrawingData(data);
+
 
     const formData = new FormData(e.currentTarget);
     formData.set("drawing", data);
@@ -69,6 +75,8 @@ export default function DrawingCanvas() {
     console.log(formData.get("drawing"));
 
 
+    const result = await Predict(formData);
+    setResult(result.data);
   }
 
 
