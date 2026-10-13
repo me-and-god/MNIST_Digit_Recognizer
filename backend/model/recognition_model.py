@@ -9,6 +9,9 @@ from sklearn.model_selection import cross_val_predict, cross_val_score
 from sklearn.preprocessing import StandardScaler
 
 
+
+
+
 def load_and_preprocess_data():
     mnist = fetch_openml("mnist_784", as_frame=False)
     X, y = mnist.data, mnist.target
@@ -22,6 +25,11 @@ def load_and_preprocess_data():
     X_test_scaled = scaler.transform(X_test)
 
     return X_train_scaled, X_test_scaled, y_train, y_test
+
+
+
+
+
 
 
 def build_and_evaluate_engine(X_train, X_test, y_train, y_test):
