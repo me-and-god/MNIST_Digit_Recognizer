@@ -4,6 +4,10 @@
 
 export async function Predict(formData: FormData) {
 
+    console.log(formData)
+    const drawing = formData.get("drawing");
+    console.log(drawing);
+
     const response =  await fetch(
         "http://127.0.0.1:8000/predict",
         {
@@ -13,7 +17,7 @@ export async function Predict(formData: FormData) {
             },
             body:JSON.stringify(
                 {
-                    image: formData
+                    image: drawing
                 }
             )
         }
@@ -31,6 +35,6 @@ export async function Predict(formData: FormData) {
 
     return {
         status: "valid",
-        data: result.prediction
+        data: result.message
     }
 }
