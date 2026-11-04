@@ -29,7 +29,7 @@ export default function Home() {
 
 
       {
-        result != '' && (
+        result ? (
 
         <div className="flex flex-col justify-center items-center gap-3 mt-30">
           <p className="font-semibold">The digit You wrote was : {result}</p>
@@ -40,7 +40,7 @@ export default function Home() {
           </div>
         </div>
         
-        )
+        ) : null
       }
 
 
