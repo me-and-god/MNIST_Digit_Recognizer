@@ -7,14 +7,14 @@ import { useState } from "react";
 
 
 export default function Home() {
-  const [ result, setResult ] = useState('');
+  const [ result, setResult ] = useState<object | null>(null);
 
 
   return (
 <>
     <div>
-      <div className="flex justify-center items-center p-10">
-        <p className="text-5xl font-black underline">Digit Recognizer</p>
+      <div className="flex justify-center p-10">
+        <p className="p-5 text-7xl font-black underline bg-linear-120 from-red-900 via-orange-500 to-gray-600 text-transparent bg-clip-text">Digit Recognizer</p>
       </div>
 
       <div className="flex justify-center items-center p-10">
@@ -29,15 +29,16 @@ export default function Home() {
 
 
       {
-        result ? (
+        result != null ? (
 
         <div className="flex flex-col justify-center items-center gap-3 mt-30">
-          <p className="font-semibold">The digit You wrote was : {result}</p>
-          <div className="flex gap-5">
+
+          <p className=" flex  gap-2 font-bold text-2xl">The digit You wrote was : <span className="text-red-600">{result["Digit"]}</span> </p>
+          {/* <div className="flex gap-5">
             <p className="font-semibold">Is this corect ?</p>
             <button className="bg-green-600 font-bold text-white px-3 rounded-2xl active:scale-105 cursor-pointer">Yes</button>
             <button className="bg-red-600 font-bold text-white px-3 rounded-2xl active:scale-105 cursor-pointer">No</button>
-          </div>
+          </div> */}
         </div>
         
         ) : null

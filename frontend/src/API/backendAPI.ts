@@ -33,8 +33,7 @@ export async function Predict(formData: FormData) {
         }
     }
 
-    return {
-        status: "valid",
-        data: result.message
-    }
+    console.log(result)
+
+    return result
 }

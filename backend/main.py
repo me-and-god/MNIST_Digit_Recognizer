@@ -1,73 +1,61 @@
 "API route for the frontend "
 
-import base64
-import binascii
-from io import BytesIO
+from model.mode_2 import preprocess_and_predict
+from model.recognition_model import model
+import numpy as np
 from PIL import Image
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
 
 app = FastAPI(title="Digit Recognizer")
 
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class DrawData(BaseModel):
     image: str
 
 @app.get("/")
-def home():
+async def home():
     return {
         "status": "server is running"
     }
 
 
+
+
+#  image prediction route
 @app.post("/predict")
 def predict( request: DrawData):
 
-    try:
-        #separate the Base64 acontent from the data URL 
-        header, encoded = request.image.split(",",1)
-
-        if header != "data:image/png;base64":
-            raise HTTPException(
-                status_code=400,
-                detail="Expected a PNG data URL"
-            )
-
-        #decode Base64 into image bytes 
-        image_bytes = base64.b64decode(
-            encoded,
-            validate=True
-        )
+    # Step 1: Preprocess base64 payload into (1, 784)
+    # features = preprocess_mnist_style(request.image)
+    features = preprocess_and_predict(request.image)
+    if not isinstance(features, np.ndarray):
+        raise HTTPException(status_code=500, detail="Image preprocessing did not return a feature array")
 
 
-        # convert image bytes  into a PIL image
-        image = Image.open(
-            BytesIO(image_bytes)
-        ).convert("RGB")
-
-
-    except HTTPException:
-        raise
-
-    except (
-        ValueError,
-        binascii.Error,
-        OSError
-    ):
-
-        raise HTTPException(
-            status_code=400,
-            detail=" invalid drawing image"
-        )
-
-
+    # Step 2: Feed features into model
+    pred = int(model.predict(features)[0])
+    conf = float(model.predict_proba(features)[0][pred] * 100)
 
 
     return {
-        "message": "drawing received",
-        "width": image.width,
-        "height": image.height
-    }
+            "Message": "drawing received",
+            "Status" : "predicted",
+            "Digit" : pred,
+            "Confidence" : round(conf, 2)
+        }

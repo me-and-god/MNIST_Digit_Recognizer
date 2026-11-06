@@ -5,7 +5,7 @@ import { Predict } from "@/API/backendAPI";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 type Props = {
-  setResult: Dispatch<SetStateAction<string>>;
+  setResult: Dispatch<SetStateAction<object | null>>;
 }
 
 export default function DrawingCanvas({ setResult }: Props) {
@@ -78,7 +78,8 @@ export default function DrawingCanvas({ setResult }: Props) {
   
       const result = await Predict(formData);
       
-      setResult(result.data);
+      console.log(result)
+      setResult(result);
     }
   }
 
@@ -89,7 +90,7 @@ export default function DrawingCanvas({ setResult }: Props) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    setResult("")
+    setResult(null)
   }
 
   return (
