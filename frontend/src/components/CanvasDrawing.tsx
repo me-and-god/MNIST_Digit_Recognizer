@@ -72,13 +72,8 @@ export default function DrawingCanvas({ setResult }: Props) {
       const formData = new FormData(e.currentTarget);
       formData.set("drawing", data);
   
-      // Example: access the submitted drawing data
-      console.log(formData.get("drawing"));
-  
-  
       const result = await Predict(formData);
       
-      console.log(result)
       setResult(result);
     }
   }
