@@ -7,7 +7,7 @@ export async function Predict(formData: FormData) {
     const drawing = formData.get("drawing");
 
     const response =  await fetch(
-        "/predict",
+        "https://mnistdigitrecognizer.vercel.app/predict",
         {
             method: "POST",
             headers: {
