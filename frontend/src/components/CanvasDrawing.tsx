@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Predict } from "@/API/backendAPI";
+// import { Predict } from "@/API/backendAPI";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 type Props = {
@@ -13,6 +13,39 @@ export default function DrawingCanvas({ setResult }: Props) {
   const [drawing, setDrawing] = useState(false);
 
 
+
+  async function Predict(formData: FormData) {
+
+    const drawing = formData.get("drawing");
+
+    const response =  await fetch(
+        "/predict",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify(
+                {
+                    image: drawing
+                }
+            )
+        }
+    )
+
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        return {
+            status: "invalid",
+            data: result.detail
+        }
+    }
+
+
+    return result
+}
 
   function startDrawing(
     e: React.MouseEvent<HTMLCanvasElement>
