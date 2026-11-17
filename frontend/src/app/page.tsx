@@ -2,12 +2,25 @@
 
 
 import DrawingCanvas from "@/components/CanvasDrawing";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 
 
 export default function Home() {
-  const [ result, setResult ] = useState<object | null>(null);
+  const [ result, setResult ] = useState<{ Digit: number | string } | null>(null);
+  
+  const handleResult: Dispatch<SetStateAction<object | null>> = (action) => {
+    setResult((previous) => {
+      const next = typeof action === "function" ? action(previous) : action;
+      if (next !== null && "Digit" in next) {
+        const digit = next.Digit;
+        if (typeof digit === "number" || typeof digit === "string") {
+          return { Digit: digit };
+        }
+      }
+      return null;
+    });
+  };
 
 
   return (
@@ -21,7 +34,7 @@ export default function Home() {
           <div className="flex flex-col justify-center items-center gap-5">
             <p className="text-2xl font-semibold">write any digit to Test Recognition model</p>
             <div  className="border-4 border-white shadow-[0_8px_7px_6px_rgba(0,0,0,0.5)] rounded-2xl w-150 h-100 bg-gray-400 mb-5">
-              <DrawingCanvas setResult={setResult}/>
+              <DrawingCanvas setResult={handleResult}/>
             </div>
         </div>
 
