@@ -16,7 +16,7 @@ Hope you find it amazing and enjoy exploring the learning process! 😊
 
 ## 🚀 Live Demo
 
-* [View Demo](https://mnistdigitrecognizer-4zm6mr6gv-me-and-myself15.vercel.app/)
+* [View Demo](https://mnistdigitrecognizer.vercel.app/)
 
 ---
 
